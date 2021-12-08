@@ -1,6 +1,8 @@
 # Simon-Says
 Arduino Matrix Game using an 8x8 matrix, a 16x2 lcd display, a joystick and a buzzer
 
+You are given some random sequnences of arrows. The goal of the game is to repeat as many sequences as you can and to make a high score.
+
 ## Task Requirements
 
 ### Menu
@@ -28,3 +30,11 @@ The user can scroll through these options using the joystick and select one by p
  - shows the game name, the author's name and the github link of the game repository
 <br>
 
+
+
+#### While playing the game
+ While playing the game, you can see:
+ - number of lives
+ - score
+ - level
+ - time left
