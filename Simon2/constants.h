@@ -15,9 +15,9 @@
 
 #define BUZZER_PIN 5
 
-#define pinSW 2
-#define xPin A0
-#define yPin A1
+#define PIN_SW 2
+#define X_PIN A0
+#define Y_PIN A1
 #define PHOTORES_PIN A2
 
 #define MATRIX_BRIGHTNESS_ADDR 44
@@ -44,19 +44,18 @@
 
 
 #define LIGHT_ADJUSTMENT_DELAY 1000
-#define scrollInterval 300
 
 #define SONG_LENGTH 26
 
 
 
 
-#define  minThreshold 100
-#define  maxThreshold 700
-#define debounceInterval 200
+#define  MIN_THRESHOLD 100
+#define  MAX_THRESHOLD 700
+#define DEBOUNCE_INTERVAL 200
 
 
-#define noOfColumns 16
-#define noOfLines 2
+#define COLUMNS 16
+#define LINES 2
 
-#define timeBarLength 12
+#define TIME_BAR_LENGTH 12

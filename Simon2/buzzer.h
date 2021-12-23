@@ -35,7 +35,7 @@ void buzz(byte index, byte song) {
     };
     tone(BUZZER_PIN, melody[index], tempo[index] * 10);
   }
-  else if (song == 2) {
+  else if (song == 2) { //we wish you a merry christmas
     int melody[SONG_LENGTH] = {
       NOTE_B3,
       NOTE_F4, NOTE_F4, NOTE_G4, NOTE_F4, NOTE_E4,
@@ -57,7 +57,7 @@ void buzz(byte index, byte song) {
     tone(BUZZER_PIN, melody[index], tempo[index] * 10);
   }
   else {
-    int melody[SONG_LENGTH] = {
+    int melody[SONG_LENGTH] = { //santa claus is coming to town
       NOTE_G4,
       NOTE_E4, NOTE_F4, NOTE_G4, NOTE_G4, NOTE_G4,
       NOTE_A4, NOTE_B4, NOTE_C5, NOTE_C5, NOTE_C5,

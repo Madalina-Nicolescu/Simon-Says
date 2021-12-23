@@ -6,7 +6,7 @@
 #include "globals.h"
 
 
-
+//depending on the difficulty, the game details are established
 void gameInitialize(int currentLevel) {
   level = currentLevel;
   if (level == 1) {
@@ -28,7 +28,7 @@ void gameInitialize(int currentLevel) {
   lives = 3;
   score = 0;
   remainingTime = guessTime;
-  decreaseTimeBarInterval = float(guessTime) / float(timeBarLength);
+  decreaseTimeBarInterval = float(guessTime) / float(TIME_BAR_LENGTH);
   gameNotOver = true;
   timeExpired = false;
   lastTimeDecrease = millis();
@@ -40,21 +40,28 @@ void gameInitialize(int currentLevel) {
   winned = false;
 }
 
+
+//starting with a sequence of legth 1,
+//the function adds an arrow (randomly chosen) when the user has made a correct guess,
+//increasing the sequnece's length
 void addMove() {
-  int x = random(-1, 2);
-  xMoves[sequenceLength - 1] = x;
-  int y = 0;
-  if (x != 0) {
-    y = 0;
-  }
-  else {
-    while (y == 0) {
-      y = random(-1, 2);
+  if (sequenceLength < SONG_LENGTH) {
+    int x = random(-1, 2);
+    xMoves[sequenceLength - 1] = x;
+    int y = 0;
+    if (x != 0) {
+      y = 0;
     }
+    else {
+      while (y == 0) {
+        y = random(-1, 2);
+      }
+    }
+    yMoves[sequenceLength - 1] = y;
   }
-  yMoves[sequenceLength - 1] = y;
 }
 
+//display every arrow in the sequence and buzz the coresponding note of the song
 void showSequence() {
   melodyIndex = 0;
   for (byte i = 0; i < sequenceLength; i++) {
@@ -63,12 +70,12 @@ void showSequence() {
       buzz(melodyIndex, song);
       melodyIndex++;
     }
-
-
   }
   melodyIndex = 0;
   printQuestionMark();
 }
+
+
 
 void createSequence() {
   melodyIndex = 0;
@@ -88,8 +95,6 @@ void createSequence() {
 }
 
 
-
-
 bool checkUserMove(int x, int y, int index) {
   return (x == xMoves[index] && y == yMoves[index]);
 }
@@ -101,6 +106,8 @@ void newRound() {
   remainingTime = guessTime;
   timeExpired = false;
 }
+
+
 
 void decreaseLives() {
   lives--;
@@ -114,17 +121,17 @@ void decreaseLives() {
 }
 
 
-
 void gameOver() {
   gameStarted = false;
   gameCreated = false;
+  //new highscore
   if (score > highscore[TOP_PLAYERS_SIZE - 1]) {
     happyFace();
     winningDisplay(score);
     winned = true;
     finalScore = score;
   }
-  else {
+  else { //game over
     sadFace();
     losingDisplay(score);
     losed = true;
@@ -146,9 +153,10 @@ void decreaseTime() {
   }
 }
 
+
 void startGame() {
   if (gameNotOver) {
-    if (moveIndex != sequenceLength) {
+    if (moveIndex != sequenceLength && sequenceLength < SONG_LENGTH) {
       decreaseTime();
       int x = xMoveJoystick(0, -1, 1, false);
       int y = yMoveJoystick(0, -1, 1, false);

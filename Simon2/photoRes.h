@@ -5,7 +5,6 @@
 #include "globals.h"
 
 
-
 void photoResistorAdjust(){
   int lowThreshold = 250;
   int highThreshold = 600;

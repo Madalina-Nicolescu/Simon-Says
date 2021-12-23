@@ -6,7 +6,7 @@
 
 
 void readSWState() {
-  if (millis() - lastChange > debounceInterval) {
+  if (millis() - lastChange > DEBOUNCE_INTERVAL) {
     if (menuState == "principal") {
       previousMenuCursor = menuCursor;
       if (menuCursor == 0) {
@@ -112,16 +112,16 @@ void readSWState() {
 
 void joystickInitialize() {
   char playerName = new char[5];
-  pinMode(xPin, INPUT);
-  pinMode(yPin, INPUT);
-  pinMode(pinSW, INPUT_PULLUP);
-  attachInterrupt(digitalPinToInterrupt(pinSW), readSWState, FALLING);
+  pinMode(X_PIN, INPUT);
+  pinMode(Y_PIN, INPUT);
+  pinMode(PIN_SW, INPUT_PULLUP);
+  attachInterrupt(digitalPinToInterrupt(PIN_SW), readSWState, FALLING);
 }
 
 int xMoveJoystick(int xCursor, int minX, int maxX, bool loopActivated) {
-  int xValue = analogRead(xPin);
-  if (millis() - lastChange  > debounceInterval) {
-    if (xValue < minThreshold && !xJoyMoved) {
+  int xValue = analogRead(X_PIN);
+  if (millis() - lastChange  > DEBOUNCE_INTERVAL) {
+    if (xValue < MIN_THRESHOLD && !xJoyMoved) {
       if (xCursor > minX) {
         xCursor--;
       }
@@ -131,7 +131,7 @@ int xMoveJoystick(int xCursor, int minX, int maxX, bool loopActivated) {
       xJoyMoved = 1;
       lastChange = millis();
     }
-    if (xValue > maxThreshold && !xJoyMoved) {
+    if (xValue > MAX_THRESHOLD && !xJoyMoved) {
       if (xCursor < maxX) {
         xCursor++;
       }
@@ -141,7 +141,7 @@ int xMoveJoystick(int xCursor, int minX, int maxX, bool loopActivated) {
       xJoyMoved = 1;
       lastChange = millis();
     }
-    if (xValue > minThreshold && xValue < maxThreshold) {
+    if (xValue > MIN_THRESHOLD && xValue < MAX_THRESHOLD) {
       xJoyMoved = 0;
     }
   }
@@ -149,9 +149,9 @@ int xMoveJoystick(int xCursor, int minX, int maxX, bool loopActivated) {
 }
 
 int yMoveJoystick(int yCursor, int minY, int maxY, bool loopActivated) {
-  int yValue = analogRead(yPin);
-  if (millis() - lastChange  > debounceInterval) {
-    if (yValue < minThreshold && !yJoyMoved) {
+  int yValue = analogRead(Y_PIN);
+  if (millis() - lastChange  > DEBOUNCE_INTERVAL) {
+    if (yValue < MIN_THRESHOLD && !yJoyMoved) {
       if (yCursor > minY) {
         yCursor--;
       }
@@ -161,7 +161,7 @@ int yMoveJoystick(int yCursor, int minY, int maxY, bool loopActivated) {
       yJoyMoved = 1;
       lastChange = millis();
     }
-    if (yValue > maxThreshold && !yJoyMoved) {
+    if (yValue > MAX_THRESHOLD && !yJoyMoved) {
       if (yCursor < maxY) {
         yCursor++;
       }
@@ -171,7 +171,7 @@ int yMoveJoystick(int yCursor, int minY, int maxY, bool loopActivated) {
       yJoyMoved = 1;
       lastChange = millis();
     }
-    if (yValue > minThreshold && yValue < maxThreshold) {
+    if (yValue > MIN_THRESHOLD && yValue < MAX_THRESHOLD) {
       yJoyMoved = 0;
     }
   }

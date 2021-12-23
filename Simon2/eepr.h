@@ -51,8 +51,10 @@ String readHighscorePosition(int hsPosition) {
   return (String(hsPosition + 1) + "." + "EMPTY");
 }
 
+//save player's score and name on the correct position in top
+//finds the correct position where the core should be inserted
+//and then lowers the other scores with one position
 void saveScore(int score, String playerName) {
-
   playerName = playerName.substring(0, NAME_MAX_LENGTH);
   for (byte i = 0; i < TOP_PLAYERS_SIZE; i++)
   {

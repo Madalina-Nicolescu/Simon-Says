@@ -1,5 +1,4 @@
 #pragma once
-#include <Vector.h>
 
 #include "eepr.h"
 #include "joystick.h"
@@ -9,9 +8,7 @@
 #include "globals.h"
 
 
-
-
-
+//create the custom chars and read from eeprom contrast and brightness
 void lcdInitialize() {
   brightness = readIntFromEEPROM(BRIGHTNESS_ADDR);
   analogWrite(BRIGHTNESS_PIN, brightness);
@@ -26,10 +23,11 @@ void lcdInitialize() {
   lcd.createChar(5, hourglassChar);
   lcd.createChar(6, checkChar);
   lcd.createChar(7, emptyBoxChar);
-  lcd.begin(noOfColumns, noOfLines);
+  lcd.begin(COLUMNS, LINES);
 }
 
 
+//the menu which is first displayed is the principal one
 void menuInitialize() {
   menuState = "principal";
   previousState = "";
@@ -43,13 +41,13 @@ void menuInitialize() {
 }
 
 
+//in we scrolled through the menu or entered another menu, the display should be updated
 bool menuChanged() {
   bool changed =  (previousCursor != menuCursor || previousState != menuState || buttonPressed);
   return changed;
 }
 
-
-
+//function to print the sliding bars
 void printBar(byte barLength) {
   lcd.setCursor(1, 1);
   lcd.print(F("-"));
@@ -66,6 +64,9 @@ void printBar(byte barLength) {
   }
 }
 
+
+//the game display is updated with the current no of lives, current score or
+//remaining time
 void updateGame(byte lives, int remainingTime, int score) {
   lcd.setCursor(1, 0);
   lcd.print(lives);
@@ -83,6 +84,9 @@ void updateGame(byte lives, int remainingTime, int score) {
   }
 }
 
+
+//when we enter the game, a countdown starts
+//and then the game details are displayed
 void gameDisplay(int level) {
   lcd.clear();
   lcd.setCursor(1, 0);
@@ -109,6 +113,10 @@ void gameDisplay(int level) {
   }
 }
 
+
+//the player name has a max length of 5 characters
+//by moving the joystick left or roght, you choose the position of the letter you want to change
+//by moving the joystick upwards and downwards, you choose the letter on the current position
 void chooseName() {
   if (setNameCursor != NAME_MAX_LENGTH) {
     lcd.setCursor(12, 1);
@@ -138,6 +146,8 @@ void chooseName() {
     setNameCursor = x;
   }
 }
+
+
 void displayNameScreen() {
   lcd.setCursor(4, 1);
   for (byte i = 0; i < NAME_MAX_LENGTH; i++) {
@@ -148,16 +158,15 @@ void displayNameScreen() {
   lcd.setCursor(4, 1);
 }
 
+//the user can choose the contrast by moving the cursor left or right
+//on a sliding bar
 void setContrast() {
   lightSettingsChanged = 1;
   byte incrStep = (MAX_CONTR - MIN_CONTR_BRIGHT) / CONTR_BRIGHT_BAR_LENGTH;
   byte contrastCursor = ((readIntFromEEPROM(CONTRAST_ADDR)) - MIN_CONTR_BRIGHT)  / incrStep;
-  byte x = xMoveJoystick(contrastCursor, 0, CONTR_BRIGHT_BAR_LENGTH, false);
-  if (x > CONTR_BRIGHT_BAR_LENGTH) {
-    x = CONTR_BRIGHT_BAR_LENGTH;
-  }
-  printBar(x);
-  byte newContrast = MIN_CONTR_BRIGHT + x * incrStep;
+  byte barLength = xMoveJoystick(contrastCursor, 0, CONTR_BRIGHT_BAR_LENGTH, false);
+  printBar(barLength);
+  byte newContrast = MIN_CONTR_BRIGHT + barLength * incrStep;
   contrast = newContrast;
   if (newContrast > MAX_CONTR) {
     contrast = MAX_CONTR;
@@ -166,16 +175,17 @@ void setContrast() {
   analogWrite(CONTRAST_PIN, contrast);
 }
 
+
 void setBrightness() {
   lightSettingsChanged = 1;
   byte incrStep = (MAX_BRIGHT - MIN_CONTR_BRIGHT) / CONTR_BRIGHT_BAR_LENGTH;
   byte brightnessCursor = ((readIntFromEEPROM(BRIGHTNESS_ADDR)) - MIN_CONTR_BRIGHT) / incrStep;
-  byte x = xMoveJoystick(brightnessCursor, 0, CONTR_BRIGHT_BAR_LENGTH, false);
-  if (x > CONTR_BRIGHT_BAR_LENGTH) {
-    x = CONTR_BRIGHT_BAR_LENGTH;
+  byte barLength = xMoveJoystick(brightnessCursor, 0, CONTR_BRIGHT_BAR_LENGTH, false);
+  if (barLength > CONTR_BRIGHT_BAR_LENGTH) {
+    barLength = CONTR_BRIGHT_BAR_LENGTH;
   }
-  printBar(x);
-  byte newBrightness = MIN_CONTR_BRIGHT + x * incrStep;
+  printBar(barLength);
+  byte newBrightness = MIN_CONTR_BRIGHT + barLength * incrStep;
   brightness = newBrightness;
   if (newBrightness > MAX_BRIGHT) {
     brightness = MAX_BRIGHT;
@@ -219,6 +229,8 @@ void setSound() {
     lcd.write(7);
   }
 }
+
+
 void confirmationClearHighscore() {
   byte cursorConf = xMoveJoystick(menuCursor, 0, 1, false);
   menuCursor = cursorConf;
@@ -245,26 +257,27 @@ void lcdIntro() {
 
 void writeArrows(bool bothArrows, bool downArrow, bool upArrow) {
   if (bothArrows) {
-    lcd.setCursor(noOfColumns - 1, 0);
+    lcd.setCursor(COLUMNS - 1, 0);
     lcd.write(byte(2));
-    lcd.setCursor(noOfColumns - 1, 1);
+    lcd.setCursor(COLUMNS - 1, 1);
     lcd.write(byte(1));
   }
   else if (downArrow) {
-    lcd.setCursor(noOfColumns - 1, 0);
+    lcd.setCursor(COLUMNS - 1, 0);
     lcd.write(byte(0));
-    lcd.setCursor(noOfColumns - 1, 1);
+    lcd.setCursor(COLUMNS - 1, 1);
     lcd.write(byte(1));
   }
   else if (upArrow) {
-    lcd.setCursor(noOfColumns - 1, 0);
+    lcd.setCursor(COLUMNS - 1, 0);
     lcd.write(byte(2));
-    lcd.setCursor(noOfColumns - 1, 1);
+    lcd.setCursor(COLUMNS - 1, 1);
     lcd.write(byte(0));
   }
 }
 
-
+//depdending on what menu the user is in and what is the position in that menu,
+//the lcd should have different designs
 void showMenu() {
   bool showArrows = false;
   if (menuSize >= 3) {
@@ -329,13 +342,11 @@ void showMenu() {
       bothArrows = true;
       upArrow = false;
     }
-
     writeArrows( bothArrows, downArrow,  upArrow);
   }
 }
 
 void updateMenu() {
-
   if (menuState == "difficulty") {
     menuCursor = yMoveJoystick(difficulty-1, 0, menuSize - 2, false);
     difficulty = menuCursor + 1;
@@ -346,11 +357,9 @@ void updateMenu() {
   }
   else if (menuState == "contrast") {
     setContrast();
-
   }
   else if (menuState == "brightness" ) {
     setBrightness();
-
   }
   else if (menuState == "matrixBrightness") {
     setMatrixBrightness();
@@ -432,12 +441,11 @@ void updateMenu() {
   }
 }
 
+//the "options" array contains every row in that menu
 void fillMenu(String newState) {
   menuState = newState;
-  //delete []options;
   if (menuState == "principal") {
     menuSize = 4;
-    //options = new String[menuSize];
     options[0] = "Start Game";
     options[1] = "Highscore";
     options[2] = "Settings";
@@ -445,7 +453,6 @@ void fillMenu(String newState) {
   }
   else if (menuState == "settings") {
     menuSize = 8;
-    //options = new String[menuSize];
     options[0] = "< BACK";
     options[1] = "Difficulty";
     options[2] = "Contrast";
@@ -457,7 +464,6 @@ void fillMenu(String newState) {
   }
   else if (menuState == "about") {
     menuSize = 4;
-    //options = new String[menuSize];
     options[0] = "< BACK";
     options[1] = "Game name: Simon Says";
     options[2] = "Author : Madalina Nicolescu";
@@ -465,7 +471,6 @@ void fillMenu(String newState) {
   }
   else if (menuState == "highscore") {
     menuSize = 6;
-    //options = new String[menuSize];
     options[0] = "< BACK";
     options[1] = readHighscorePosition(0);
     options[2] = readHighscorePosition(1);
@@ -475,7 +480,6 @@ void fillMenu(String newState) {
   }
   else if (menuState == "difficulty") {
     menuSize = 4;
-    //options = new String[menuSize];
     options[0] = "Set Difficulty";
     options[1] = "LOW";
     options[2] = "MEDIUM";
@@ -483,7 +487,6 @@ void fillMenu(String newState) {
   }
   else if (menuState == "song") {
     menuSize = 4;
-    //options = new String[menuSize];
     options[0] = "Choose song";
     options[1] = "Jingle Bells";
     options[2] = "We wish you a merry Christmas";
@@ -491,33 +494,27 @@ void fillMenu(String newState) {
   }
   else if (menuState == "contrast") {
     menuSize = 1;
-    //options = new String[menuSize];
     options[0] = "Set Contrast";
   }
   else if (menuState == "brightness") {
     menuSize = 1;
-    //options = new String[menuSize];
     options[0] = "Set Brightness";
   }
   else if (menuState == "matrixBrightness") {
     menuSize = 1;
-    //options = new String[menuSize];
     options[0] = F("Set Brightness");
   }
   else if (menuState == "clearHighscore") {
     menuSize = 2;
-    //options = new String[menuSize];
     options[0] = F("   Highscore ");
     options[1] = F("      deleted!");
   }
   else if (menuState == "name") {
     menuSize = 1;
-    //options = new String[menuSize];
     options[0] = F("   Set name");
   }
   else if (menuState == "sound") {
     menuSize = 2;
-    //options = new String[menuSize];
     options[0] = F("     Sound");
     options[1] = F("   ON    OFF");
   }
@@ -528,6 +525,8 @@ void fillMenu(String newState) {
   }
 }
 
+
+//the message when the player made a high score
 void winningDisplay(int score) {
   lcd.clear();
   lcd.setCursor(1, 0);
@@ -537,6 +536,7 @@ void winningDisplay(int score) {
   lcd.print(score);
 }
 
+//the message when the player losed
 void losingDisplay(int score) {
   lcd.clear();
   lcd.setCursor(1, 0);
