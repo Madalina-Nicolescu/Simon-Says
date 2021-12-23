@@ -1,21 +1,15 @@
 #pragma once
 #include <Vector.h>
-#include <LiquidCrystal.h>
+
 #include "eepr.h"
 #include "joystick.h"
-#include "menu.h"
+#include "photoRes.h"
 #include "matrix.h"
 #include "customChar.h"
+#include "globals.h"
 
 
-int brightness;
-int contrast;
-byte difficulty;
-bool displayNameScreenInitialized = false;
-byte song = 1;
-LiquidCrystal lcd = LiquidCrystal(RS, ENABLE, D4, D5, D6, D7);
-unsigned long lastScroll = 0;
-byte scrollIndex = 0;
+
 
 
 void lcdInitialize() {
@@ -23,6 +17,7 @@ void lcdInitialize() {
   analogWrite(BRIGHTNESS_PIN, brightness);
   contrast = readIntFromEEPROM(CONTRAST_ADDR);
   analogWrite(CONTRAST_PIN, contrast);
+  difficulty = readIntFromEEPROM(DIFFICULTY_ADDR);
   lcd.createChar(0, verticalLine);
   lcd.createChar(1, downArrowChar);
   lcd.createChar(2, upArrowChar);
@@ -33,6 +28,27 @@ void lcdInitialize() {
   lcd.createChar(7, emptyBoxChar);
   lcd.begin(noOfColumns, noOfLines);
 }
+
+
+void menuInitialize() {
+  menuState = "principal";
+  previousState = "";
+  previousCursor = 0;
+  menuCursor = 0;
+  menuSize = 4;
+  options[0] = "Start Game";
+  options[1] = "Highscore";
+  options[2] = "Settings";
+  options[3] = "About";
+}
+
+
+bool menuChanged() {
+  bool changed =  (previousCursor != menuCursor || previousState != menuState || buttonPressed);
+  return changed;
+}
+
+
 
 void printBar(byte barLength) {
   lcd.setCursor(1, 1);
@@ -133,7 +149,8 @@ void displayNameScreen() {
 }
 
 void setContrast() {
-  byte incrStep = (MAX_CONTR_BRIGHT - MIN_CONTR_BRIGHT) / CONTR_BRIGHT_BAR_LENGTH;
+  lightSettingsChanged = 1;
+  byte incrStep = (MAX_CONTR - MIN_CONTR_BRIGHT) / CONTR_BRIGHT_BAR_LENGTH;
   byte contrastCursor = ((readIntFromEEPROM(CONTRAST_ADDR)) - MIN_CONTR_BRIGHT)  / incrStep;
   byte x = xMoveJoystick(contrastCursor, 0, CONTR_BRIGHT_BAR_LENGTH, false);
   if (x > CONTR_BRIGHT_BAR_LENGTH) {
@@ -142,15 +159,16 @@ void setContrast() {
   printBar(x);
   byte newContrast = MIN_CONTR_BRIGHT + x * incrStep;
   contrast = newContrast;
-  if (newContrast > MAX_CONTR_BRIGHT) {
-    contrast = MAX_CONTR_BRIGHT;
+  if (newContrast > MAX_CONTR) {
+    contrast = MAX_CONTR;
   }
   writeIntIntoEEPROM(CONTRAST_ADDR, newContrast);
   analogWrite(CONTRAST_PIN, contrast);
 }
 
 void setBrightness() {
-  byte incrStep = (MAX_CONTR_BRIGHT - MIN_CONTR_BRIGHT) / CONTR_BRIGHT_BAR_LENGTH;
+  lightSettingsChanged = 1;
+  byte incrStep = (MAX_BRIGHT - MIN_CONTR_BRIGHT) / CONTR_BRIGHT_BAR_LENGTH;
   byte brightnessCursor = ((readIntFromEEPROM(BRIGHTNESS_ADDR)) - MIN_CONTR_BRIGHT) / incrStep;
   byte x = xMoveJoystick(brightnessCursor, 0, CONTR_BRIGHT_BAR_LENGTH, false);
   if (x > CONTR_BRIGHT_BAR_LENGTH) {
@@ -159,8 +177,8 @@ void setBrightness() {
   printBar(x);
   byte newBrightness = MIN_CONTR_BRIGHT + x * incrStep;
   brightness = newBrightness;
-  if (newBrightness > MAX_CONTR_BRIGHT) {
-    brightness = MAX_CONTR_BRIGHT;
+  if (newBrightness > MAX_BRIGHT) {
+    brightness = MAX_BRIGHT;
   }
   writeIntIntoEEPROM(BRIGHTNESS_ADDR, newBrightness);
   analogWrite(BRIGHTNESS_PIN, brightness);
@@ -168,6 +186,7 @@ void setBrightness() {
 }
 
 void setMatrixBrightness() {
+  lightSettingsChanged = 1;
   displayAll();
   byte incrStep = MAX_MATRX_BRIGHT / BAR_LENGTH;
   byte brightnessCursor = readIntFromEEPROM(MATRIX_BRIGHTNESS_ADDR) / incrStep;
@@ -189,6 +208,7 @@ void setMatrixBrightness() {
 void setSound() {
   soundOff = xMoveJoystick(soundOff, 0, 1, false);
   if (soundOff) {
+    noTone(BUZZER_PIN);
     lcd.setCursor(7, 1);
     lcd.write(7);
     lcd.write(255);
@@ -241,25 +261,6 @@ void writeArrows(bool bothArrows, bool downArrow, bool upArrow) {
     lcd.write(byte(2));
     lcd.setCursor(noOfColumns - 1, 1);
     lcd.write(byte(0));
-  }
-}
-
-String scroll(String textToBeScrolled) {
-  if (textToBeScrolled.length() > 14) {
-    if (millis() - lastScroll > scrollInterval) {
-      lastScroll = millis();
-      if (scrollIndex < textToBeScrolled.length() - 14) {
-        scrollIndex++;
-      }
-      else {
-        scrollIndex = 0;
-      }
-      return textToBeScrolled.substring(scrollIndex, 14);
-    }
-  }
-  else {
-    scrollIndex = 0;
-    return textToBeScrolled;
   }
 }
 
@@ -336,7 +337,7 @@ void showMenu() {
 void updateMenu() {
 
   if (menuState == "difficulty") {
-    menuCursor = yMoveJoystick(menuCursor, 0, menuSize - 2, false);
+    menuCursor = yMoveJoystick(difficulty-1, 0, menuSize - 2, false);
     difficulty = menuCursor + 1;
   }
   if (menuState == "song") {
@@ -369,7 +370,7 @@ void updateMenu() {
   }
   if (previousState == "name") {
     if (nameSetted) {
-      
+
       for (byte i = 0; i < NAME_MAX_LENGTH; i++) {
         playerName[i] = '_';
       }
@@ -389,7 +390,10 @@ void updateMenu() {
     }
   }
   else {
-    menuCursor = yMoveJoystick(menuCursor, 0, menuSize - 1, false);
+    if (menuState != "sound" && menuState != "confimration") {
+      menuCursor = yMoveJoystick(menuCursor, 0, menuSize - 1, false);
+    }
+
   }
   if (menuChanged()) {
     if (!soundOff) {

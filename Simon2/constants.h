@@ -18,6 +18,7 @@
 #define pinSW 2
 #define xPin A0
 #define yPin A1
+#define PHOTORES_PIN A2
 
 #define MATRIX_BRIGHTNESS_ADDR 44
 #define CONTRAST_ADDR 40
@@ -25,7 +26,8 @@
 #define DIFFICULTY_ADDR 46
 
 
-#define MAX_CONTR_BRIGHT 150
+#define MAX_CONTR 100
+#define MAX_BRIGHT 255
 #define MIN_CONTR_BRIGHT 30
 #define MAX_MATRX_BRIGHT 15
 #define CONTR_BRIGHT_BAR_LENGTH 10
@@ -33,26 +35,15 @@
 
 #define TOP_PLAYERS_SIZE 5
 
-const byte highscoreAddresses[TOP_PLAYERS_SIZE] = {
-  0, 2, 4, 6, 8
-};
 
-const byte topPlayersAddresses[TOP_PLAYERS_SIZE] = {
-  10, 16, 22, 28, 34
-};
 
 #define NAME_MAX_LENGTH 5
 
 #define NOTE_SUSTAIN 20
 
-int* highscore  = new int[TOP_PLAYERS_SIZE];;
-String* playersNames = new String[TOP_PLAYERS_SIZE];
-int finalScore = 0;
-char playerName[NAME_MAX_LENGTH + 1] = "_____\n";
 
 
-byte soundOff = 1;
-
+#define LIGHT_ADJUSTMENT_DELAY 1000
 #define scrollInterval 300
 
 #define SONG_LENGTH 26

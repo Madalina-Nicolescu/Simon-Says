@@ -1,6 +1,7 @@
 #pragma once
 #include<EEPROM.h>
 #include "constants.h"
+#include "globals.h"
 
 
 void writeIntIntoEEPROM(int address, int number) {
@@ -51,8 +52,8 @@ String readHighscorePosition(int hsPosition) {
 }
 
 void saveScore(int score, String playerName) {
-  
-  playerName = playerName.substring(0,NAME_MAX_LENGTH);
+
+  playerName = playerName.substring(0, NAME_MAX_LENGTH);
   for (byte i = 0; i < TOP_PLAYERS_SIZE; i++)
   {
     if (score > highscore[i]) {
@@ -65,8 +66,8 @@ void saveScore(int score, String playerName) {
       break;
     }
   }
-  for(byte i = 0; i < TOP_PLAYERS_SIZE; i++){
-    writeIntIntoEEPROM(highscoreAddresses[i], highscore[i]); 
+  for (byte i = 0; i < TOP_PLAYERS_SIZE; i++) {
+    writeIntIntoEEPROM(highscoreAddresses[i], highscore[i]);
     writeStringToEEPROM(topPlayersAddresses[i], playersNames[i]);
   }
 }

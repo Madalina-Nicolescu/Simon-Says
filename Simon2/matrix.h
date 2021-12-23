@@ -1,11 +1,10 @@
 #pragma once
 #include "constants.h"
 #include "customChar.h"
-#include "LedControl.h"
-#include "eepr.h"
 
-LedControl lc = LedControl(DIN_PIN, CLOCK_PIN, LOAD_PIN, 1);
-byte matrixBrightness;
+#include "eepr.h"
+#include "globals.h"
+
 
 void matrixInitialize() {
   lc.shutdown(0, false); // turn off power saving, enables display
@@ -63,7 +62,7 @@ void matrixIntro() {
   }
 
   for (byte row = 0; row < matrixSize; row++) {
-    lc.setRow(0, row, questionMatrixByte[row]);
+    lc.setRow(0, row, treeMatrixByte[row]);
   }
   delay(800);
   printLogo();

@@ -1,26 +1,11 @@
 #pragma once
 #include <ArduinoQueue.h>
 #include "matrix.h"
-//#include "eeprom.h"
 #include "joystick.h"
 #include "buzzer.h"
+#include "globals.h"
 
-byte lives;
-int guessTime;
-byte level;
-int score;
-byte scoreStep;
-byte sequenceLength;
-bool timeExpired = false;
-unsigned long lastTimeDecrease;
-int remainingTime;
-float decreaseTimeBarInterval;
-int xMoves[SONG_LENGTH];
-int yMoves[SONG_LENGTH];
-bool gameCreated = false;
-byte melodyIndex = 0;
-int moveDelay = 0;
-byte moveIndex = 0;
+
 
 void gameInitialize(int currentLevel) {
   level = currentLevel;

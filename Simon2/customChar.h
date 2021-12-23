@@ -1,6 +1,17 @@
 #pragma once
 const byte matrixSize = 8;
 
+byte treeMatrixByte[matrixSize] = {
+  B00010000,
+  B00111000,
+  B01111100,
+  B00111000,
+  B01111100,
+  B11111110,
+  B00111000,
+  B00111000
+};
+
 const byte settingsMatrixByte[matrixSize] = {
   B01100110,
   B01100110,

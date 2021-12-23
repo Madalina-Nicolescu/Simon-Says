@@ -1,16 +1,8 @@
 #pragma once
-#include "menu.h"
+#include "photoRes.h"
 #include "eepr.h"
+#include "globals.h"
 
-byte xJoyMoved = 0;
-byte yJoyMoved = 0;
-volatile  unsigned long long lastChange = 0;
-volatile bool gameStarted = false;
-volatile bool losed = false;
-volatile bool winned = false;
-byte setNameCursor = 0;
-bool gameNotOver = true;
-volatile bool nameSetted = false;
 
 
 void readSWState() {
@@ -89,31 +81,32 @@ void readSWState() {
       if (menuCursor == 0) {
         menuCursor = previousMenuCursor;
         menuState = "settings";
-      if (menuCursor == 1) {
+      }
+        if (menuCursor == 1) {
+          menuCursor = 0;
+          menuState = "clearHighscore";
+        }
+      }
+      else if (menuState == "name" && setNameCursor == NAME_MAX_LENGTH) {
+        saveScore(finalScore, playerName);
+        previousState = "name";
+        menuState = "highscore";
         menuCursor = 0;
-        menuState = "clearHighscore";
+        nameSetted = true;
+
+      }
+      else if (menuState == "highscore" && menuCursor == 0) {
+        menuState = "principal";
+        menuCursor = 1;
+      }
+      else if (menuState == "difficulty" || menuState == "contrast" || menuState == "brightness" || menuState == "matrixBrightness" || menuState == "clearHighscore" || menuState == "sound" || menuState == "song") {
+        previousState = menuState;
+        menuState = "settings";
+        menuCursor = previousMenuCursor;
       }
     }
-    else if (menuState == "name" && setNameCursor == NAME_MAX_LENGTH) {
-      saveScore(finalScore, playerName);
-      previousState = "name";
-      menuState = "highscore";
-      menuCursor = 0;
-      nameSetted = true;
-
-    }
-    else if (menuState == "highscore" && menuCursor == 0) {
-      menuState = "principal";
-      menuCursor = 1;
-    }
-    else if (menuState == "difficulty" || menuState == "contrast" || menuState == "brightness" || menuState == "matrixBrightness" || menuState == "clearHighscore" || menuState == "sound" || menuState == "song") {
-      previousState = menuState;
-      menuState = "settings";
-      menuCursor = previousMenuCursor;
-    }
-  }
-  buttonPressed = true;
-  lastChange = millis();
+    buttonPressed = true;
+    lastChange = millis();
 }
 
 
