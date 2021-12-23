@@ -12,7 +12,6 @@ bool initialize = false;
 
 void setup() {
   noTone(BUZZER_PIN);
-  Serial.begin(9600);
 }
 
 
@@ -25,7 +24,7 @@ void loop() {
     initialize = true;
   }
 
-  Serial.println(menuState);
+  delay(5);
   if (!intro) {
     lcdIntro();
     matrixIntro();

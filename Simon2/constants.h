@@ -1,12 +1,13 @@
 #pragma once
 #include "notes.h"
 #define RS 13
-#define ENABLE 9
+#define ENABLE 8
 #define D4 7
-#define D5 6
+#define D5 1
 #define D6 4
 #define D7 3
-//#define CONTRAST_PIN 3
+#define CONTRAST_PIN 9
+#define BRIGHTNESS_PIN 6
 
 #define DIN_PIN 12
 #define CLOCK_PIN 11
@@ -24,8 +25,10 @@
 #define DIFFICULTY_ADDR 46
 
 
-#define MAX_CONTR_BRIGHT 255
+#define MAX_CONTR_BRIGHT 150
+#define MIN_CONTR_BRIGHT 30
 #define MAX_MATRX_BRIGHT 15
+#define CONTR_BRIGHT_BAR_LENGTH 10
 #define BAR_LENGTH 12
 
 #define TOP_PLAYERS_SIZE 5
@@ -48,9 +51,9 @@ int finalScore = 0;
 char playerName[NAME_MAX_LENGTH + 1] = "_____\n";
 
 
-byte soundOff = 0;
+byte soundOff = 1;
 
-
+#define scrollInterval 300
 
 #define SONG_LENGTH 26
 

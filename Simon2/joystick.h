@@ -74,7 +74,7 @@ void readSWState() {
       }
       else if (menuCursor == 5) {
         menuCursor = 0;
-        menuState = "clearHighscore";
+        menuState = "confirmation";
       }
       else if (menuCursor == 6) {
         menuCursor = 0;
@@ -85,18 +85,28 @@ void readSWState() {
         menuState = "song";
       }
     }
+    else if (menuState == "confirmation") {
+      if (menuCursor == 0) {
+        menuCursor = previousMenuCursor;
+        menuState = "settings";
+      if (menuCursor == 1) {
+        menuCursor = 0;
+        menuState = "clearHighscore";
+      }
+    }
     else if (menuState == "name" && setNameCursor == NAME_MAX_LENGTH) {
+      saveScore(finalScore, playerName);
       previousState = "name";
       menuState = "highscore";
       menuCursor = 0;
       nameSetted = true;
-      
+
     }
     else if (menuState == "highscore" && menuCursor == 0) {
       menuState = "principal";
       menuCursor = 1;
     }
-    else if (menuState == "difficulty" || menuState == "contrast" || menuState == "brightness" || menuState == "matrixBrightness" || menuState == "clearHighscore" || menuState == "sound"|| menuState == "song") {
+    else if (menuState == "difficulty" || menuState == "contrast" || menuState == "brightness" || menuState == "matrixBrightness" || menuState == "clearHighscore" || menuState == "sound" || menuState == "song") {
       previousState = menuState;
       menuState = "settings";
       menuCursor = previousMenuCursor;

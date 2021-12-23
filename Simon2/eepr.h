@@ -53,7 +53,6 @@ String readHighscorePosition(int hsPosition) {
 void saveScore(int score, String playerName) {
   
   playerName = playerName.substring(0,NAME_MAX_LENGTH);
-  Serial.println(playerName);
   for (byte i = 0; i < TOP_PLAYERS_SIZE; i++)
   {
     if (score > highscore[i]) {

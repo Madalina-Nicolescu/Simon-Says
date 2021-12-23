@@ -26,27 +26,42 @@ void printLogo() {
 }
 
 void matrixIntro() {
-  tone(BUZZER_PIN, NOTE_G5,100);
+  if (!soundOff) {
+    tone(BUZZER_PIN, NOTE_G5, 100);
+  }
+
   for (byte row = 0; row < matrixSize; row++) {
     lc.setRow(0, row, upMatrixByte[row]);
   }
   delay(800);
-  tone(BUZZER_PIN, NOTE_A5,100);
+  if (!soundOff) {
+    tone(BUZZER_PIN, NOTE_A5, 100);
+  }
+
   for (byte row = 0; row < matrixSize; row++) {
     lc.setRow(0, row, leftMatrixByte[row]);
   }
   delay(800);
-  tone(BUZZER_PIN, NOTE_B5,100);
+  if (!soundOff) {
+    tone(BUZZER_PIN, NOTE_B5, 100);
+  }
+
   for (byte row = 0; row < matrixSize; row++) {
     lc.setRow(0, row, downMatrixByte[row]);
   }
   delay(800);
-    tone(BUZZER_PIN, NOTE_C6,100);
+  if (!soundOff) {
+    tone(BUZZER_PIN, NOTE_C6, 100);
+  }
+
   for (byte row = 0; row < matrixSize; row++) {
     lc.setRow(0, row, rightMatrixByte[row]);
   }
   delay(800);
-   tone(BUZZER_PIN, NOTE_C6,100);
+  if (!soundOff) {
+    tone(BUZZER_PIN, NOTE_C6, 100);
+  }
+
   for (byte row = 0; row < matrixSize; row++) {
     lc.setRow(0, row, questionMatrixByte[row]);
   }
@@ -87,22 +102,22 @@ void happyFace() {
 }
 
 void countdown() {
-  if(!soundOff){
-    tone(BUZZER_PIN, 1500,20);
+  if (!soundOff) {
+    tone(BUZZER_PIN, 1500, 20);
   }
   for (byte row = 0; row < matrixSize; row++) {
     lc.setRow(0, row, threeMatrixByte[row]);
   }
   delay(1000);
-  if(!soundOff){
-    tone(BUZZER_PIN, 1500,20);
+  if (!soundOff) {
+    tone(BUZZER_PIN, 1500, 20);
   }
   for (byte row = 0; row < matrixSize; row++) {
     lc.setRow(0, row, twoMatrixByte[row]);
   }
   delay(1000);
-  if(!soundOff){
-    tone(BUZZER_PIN, 1500,20);
+  if (!soundOff) {
+    tone(BUZZER_PIN, 1500, 20);
   }
   for (byte row = 0; row < matrixSize; row++) {
     lc.setRow(0, row, oneMatrixByte[row]);
@@ -134,10 +149,10 @@ void displayMove(int x, int y, int moveDelay, bool applyDelay) {
       lc.setRow(0, row, leftMatrixByte[row]);
     }
   }
-  if(applyDelay){
+  if (applyDelay) {
     delay(moveDelay);
   }
-  
+
 }
 
 
