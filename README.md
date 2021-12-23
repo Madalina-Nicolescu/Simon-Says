@@ -83,9 +83,7 @@ Depending on the difficulty, the game has 3 levels:
  - photoresistor -> adjust contrast, brightness, matrix brightness depending on the amount of light in the environment
 
 ## Setup
-<img src = "https://github.com/Madalina-Nicolescu/Simon-Says/blob/main/setup%20(2).jpeg" width = "500" height= "500">
 <img src = "https://github.com/Madalina-Nicolescu/Simon-Says/blob/main/setup%20(3).jpeg" width = "500" height= "500">
-<img src = "https://github.com/Madalina-Nicolescu/Simon-Says/blob/main/setup%20(4).jpeg" width = "500" height= "500">
 <img src = "https://github.com/Madalina-Nicolescu/Simon-Says/blob/main/setup%20(5).jpeg" width = "500" height= "500">
 
 
