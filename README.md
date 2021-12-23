@@ -83,6 +83,12 @@ Depending on the difficulty, the game has 3 levels:
  - photoresistor -> adjust contrast, brightness, matrix brightness depending on the amount of light in the environment
 
 ## Setup
+<img src = "https://github.com/Madalina-Nicolescu/IntroductionToRobotics/blob/main/CrosswalkSimulator/setup.jpeg" width = "500" height= "500">
+<img src = "https://github.com/Madalina-Nicolescu/IntroductionToRobotics/blob/main/CrosswalkSimulator/setup1.jpeg" width = "500" height= "500">
+<img src = "https://github.com/Madalina-Nicolescu/IntroductionToRobotics/blob/main/CrosswalkSimulator/setup.jpeg" width = "500" height= "500">
+<img src = "https://github.com/Madalina-Nicolescu/IntroductionToRobotics/blob/main/CrosswalkSimulator/setup1.jpeg" width = "500" height= "500">
+
+
 
 ## Video demo
 
