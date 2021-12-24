@@ -13,14 +13,11 @@ volatile byte previousMenuCursor;
 byte setNameCursor = 0;
 
 
-
-
 //joystick variables
 bool buttonPressed = false;
 byte xJoyMoved = 0;
 byte yJoyMoved = 0;
 volatile  unsigned long long lastChange = 0;
-
 
 
 //lcd variables
@@ -32,8 +29,6 @@ int contrast;
 //matrix variables
 LedControl lc = LedControl(DIN_PIN, CLOCK_PIN, LOAD_PIN, 1);
 byte matrixBrightness;
-
-
 
 
 //game variables
@@ -65,12 +60,9 @@ int finalScore = 0;
 char playerName[NAME_MAX_LENGTH + 1] = "_____\n";
 
 
-
 //photoresistor variables
 unsigned long lastAdjust = 0;
 byte lightSettingsChanged = 0;
-
-
 
 
 //buzzer variables
@@ -79,12 +71,10 @@ byte song = 1;
 byte soundOff = 1;
 
 
-
 //eeprom variables
 const byte highscoreAddresses[TOP_PLAYERS_SIZE] = {
   0, 2, 4, 6, 8
 };
-
 const byte topPlayersAddresses[TOP_PLAYERS_SIZE] = {
   10, 16, 22, 28, 34
 };

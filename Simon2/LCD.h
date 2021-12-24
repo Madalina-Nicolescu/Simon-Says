@@ -1,12 +1,10 @@
 #pragma once
-
 #include "eepr.h"
 #include "joystick.h"
 #include "photoRes.h"
 #include "matrix.h"
 #include "customChar.h"
 #include "globals.h"
-
 
 //create the custom chars and read from eeprom contrast and brightness
 void lcdInitialize() {
@@ -26,7 +24,6 @@ void lcdInitialize() {
   lcd.begin(COLUMNS, LINES);
 }
 
-
 //the menu which is first displayed is the principal one
 void menuInitialize() {
   menuState = "principal";
@@ -39,7 +36,6 @@ void menuInitialize() {
   options[2] = "Settings";
   options[3] = "About";
 }
-
 
 //in we scrolled through the menu or entered another menu, the display should be updated
 bool menuChanged() {
@@ -64,7 +60,6 @@ void printBar(byte barLength) {
   }
 }
 
-
 //the game display is updated with the current no of lives, current score or
 //remaining time
 void updateGame(byte lives, int remainingTime, int score) {
@@ -83,7 +78,6 @@ void updateGame(byte lives, int remainingTime, int score) {
     }
   }
 }
-
 
 //when we enter the game, a countdown starts
 //and then the game details are displayed
@@ -112,7 +106,6 @@ void gameDisplay(int level) {
     lcd.write(255);
   }
 }
-
 
 //the player name has a max length of 5 characters
 //by moving the joystick left or roght, you choose the position of the letter you want to change
@@ -147,7 +140,6 @@ void chooseName() {
   }
 }
 
-
 void displayNameScreen() {
   lcd.setCursor(4, 1);
   for (byte i = 0; i < NAME_MAX_LENGTH; i++) {
@@ -174,7 +166,6 @@ void setContrast() {
   writeIntIntoEEPROM(CONTRAST_ADDR, newContrast);
   analogWrite(CONTRAST_PIN, contrast);
 }
-
 
 void setBrightness() {
   lightSettingsChanged = 1;
@@ -213,8 +204,6 @@ void setMatrixBrightness() {
   writeIntIntoEEPROM(MATRIX_BRIGHTNESS_ADDR, newBrightness);
 }
 
-
-
 void setSound() {
   soundOff = xMoveJoystick(soundOff, 0, 1, false);
   if (soundOff) {
@@ -229,7 +218,6 @@ void setSound() {
     lcd.write(7);
   }
 }
-
 
 void confirmationClearHighscore() {
   byte cursorConf = xMoveJoystick(menuCursor, 0, 1, false);
@@ -465,8 +453,8 @@ void fillMenu(String newState) {
   else if (menuState == "about") {
     menuSize = 4;
     options[0] = "< BACK";
-    options[1] = "Game name: Simon Says";
-    options[2] = "Author : Madalina Nicolescu";
+    options[1] = "Game name";
+    options[2] = "Author";
     options[3] = "Github";
   }
   else if (menuState == "highscore") {
@@ -523,8 +511,22 @@ void fillMenu(String newState) {
     options[0] = F(" Are you sure?");
     options[1] = F("   NO    YES");
   }
+  else if (menuState == "gameName") {
+    menuSize = 2;
+    options[0] = F("  Game name");
+    options[1] = F("  Simon Says");
+  }
+  else if (menuState == "author") {
+    menuSize = 2;
+    options[0] = F(" Madalina");
+    options[1] = F("   Nicolescu");
+  }
+  else if (menuState == "github") {
+    menuSize = 2;
+    options[0] = F("@Madalina-");
+    options[1] = F("   Nicolescu");
+  }
 }
-
 
 //the message when the player made a high score
 void winningDisplay(int score) {

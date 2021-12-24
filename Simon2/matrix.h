@@ -1,10 +1,8 @@
 #pragma once
 #include "constants.h"
 #include "customChar.h"
-
 #include "eepr.h"
 #include "globals.h"
-
 
 void matrixInitialize() {
   lc.shutdown(0, false); // turn off power saving, enables display
@@ -67,8 +65,6 @@ void matrixIntro() {
   delay(800);
   printLogo();
 }
-
-
 
 void displayAll() {
   for (byte row = 0; row < matrixSize; row++) {
@@ -153,7 +149,6 @@ void displayMove(int x, int y, int moveDelay, bool applyDelay) {
   }
 
 }
-
 
 void printQuestionMark() {
   for (byte row = 0; row < matrixSize; row++) {

@@ -3,7 +3,6 @@
 #include "constants.h"
 #include "globals.h"
 
-
 void writeIntIntoEEPROM(int address, int number) {
   EEPROM.update(address, number >> 8);
   EEPROM.update(address + 1, number & 0xFF);
@@ -41,6 +40,7 @@ void clearCharFromAddress(int address) {
   EEPROM.update(address, "");
 }
 
+//return the string that should be placed on the hsPosition in highscore menu
 String readHighscorePosition(int hsPosition) {
   int score = max(0, readIntFromEEPROM(highscoreAddresses[hsPosition]));
   String playerName = readStringFromEEPROM(topPlayersAddresses[hsPosition]);

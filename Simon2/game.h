@@ -5,7 +5,6 @@
 #include "buzzer.h"
 #include "globals.h"
 
-
 //depending on the difficulty, the game details are established
 void gameInitialize(int currentLevel) {
   level = currentLevel;
@@ -39,7 +38,6 @@ void gameInitialize(int currentLevel) {
   losed = false;
   winned = false;
 }
-
 
 //starting with a sequence of legth 1,
 //the function adds an arrow (randomly chosen) when the user has made a correct guess,
@@ -75,8 +73,6 @@ void showSequence() {
   printQuestionMark();
 }
 
-
-
 void createSequence() {
   melodyIndex = 0;
   int x = random(-1, 2);
@@ -94,20 +90,15 @@ void createSequence() {
   showSequence();
 }
 
-
 bool checkUserMove(int x, int y, int index) {
   return (x == xMoves[index] && y == yMoves[index]);
 }
-
-
 
 void newRound() {
   showSequence();
   remainingTime = guessTime;
   timeExpired = false;
 }
-
-
 
 void decreaseLives() {
   lives--;
@@ -119,7 +110,6 @@ void decreaseLives() {
     gameNotOver = false;
   }
 }
-
 
 void gameOver() {
   gameStarted = false;
@@ -153,19 +143,22 @@ void decreaseTime() {
   }
 }
 
-
 void startGame() {
   if (gameNotOver) {
+    //the user has to guess every move, until he reaches the sequenceLength
     if (moveIndex != sequenceLength && sequenceLength < SONG_LENGTH) {
       decreaseTime();
+      //read the user's move
       int x = xMoveJoystick(0, -1, 1, false);
       int y = yMoveJoystick(0, -1, 1, false);
       if (x != 0 || y != 0 || timeExpired) {
+        //the move is displayed and the corresponding note is emitted
         displayMove(x, y, moveDelay, false);
         if (!soundOff) {
           buzz(melodyIndex, song);
           melodyIndex++;
         }
+        //check the user's move
         bool userIsCorrect = checkUserMove(x, y, moveIndex);
         if (!userIsCorrect || timeExpired) {
           if (!soundOff) {
@@ -182,11 +175,13 @@ void startGame() {
           }
         }
         else if (userIsCorrect) {
+          //the user has to guess another move
           moveIndex++;
         }
       }
     }
     if (moveIndex == sequenceLength && gameNotOver) {
+      //the user guessed all the moves, add another arrow
       moveIndex = 0;
       printCorrect();
       score += scoreStep;

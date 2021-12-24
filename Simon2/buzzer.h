@@ -9,7 +9,6 @@ void wrongSoundEffect() {
   noTone(BUZZER_PIN);
 }
 
-
 void buzz(byte index, byte song) {
   noTone(BUZZER_PIN);
   if (song == 1) { //jingle bells

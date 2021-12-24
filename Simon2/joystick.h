@@ -3,8 +3,6 @@
 #include "eepr.h"
 #include "globals.h"
 
-
-
 void readSWState() {
   if (millis() - lastChange > DEBOUNCE_INTERVAL) {
     if (menuState == "principal") {
@@ -36,9 +34,22 @@ void readSWState() {
       }
     }
     else if (menuState == "about") {
+      previousMenuCursor = menuCursor;
       if (menuCursor == 0) {
         menuState = "principal";
         menuCursor = 3;
+      }
+      else if(menuCursor == 1){
+        menuState = "gameName";
+        menuCursor = 0;
+      }
+      else if(menuCursor == 2){
+        menuState = "author";
+        menuCursor = 0;
+      }
+      else if(menuCursor == 3){
+        menuState = "github";
+        menuCursor = 0;
       }
     }
     else if (menuState == "settings") {
@@ -104,11 +115,15 @@ void readSWState() {
         menuState = "settings";
         menuCursor = previousMenuCursor;
       }
+      else if (menuState == "gameName" || menuState == "author" || menuState == "github"){
+        previousState = menuState;
+        menuState = "about";
+        menuCursor = previousMenuCursor;
+      }
     }
     buttonPressed = true;
     lastChange = millis();
 }
-
 
 void joystickInitialize() {
   char playerName = new char[5];
