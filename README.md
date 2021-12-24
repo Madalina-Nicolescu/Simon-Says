@@ -37,7 +37,7 @@ The principal menu consists of the following options:
       - AUTHOR
         - MADALINA NICOLESCU 
       - GITHUB
-        - MADALINA-NICOLESCU
+        - @MADALINA-NICOLESCU
        
 The user can scroll through these options using the joystick and select one by pressing the button. 
 When accesing a menu, a different image is shown on the matrix: highscore - :trophy:, settings - #, about - :question:
