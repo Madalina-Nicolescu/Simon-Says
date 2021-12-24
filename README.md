@@ -33,8 +33,11 @@ The principal menu consists of the following options:
        - SANTA CLAUS IS COMING TO TOWN
   - ABOUT
       - GAME NAME
+       - SIMON SAYS
       - AUTHOR
+       - MADALINA NICOLESCU 
       - GITHUB
+       - MADALINA-NICOLESCU
        
 The user can scroll through these options using the joystick and select one by pressing the button. 
 When accesing a menu, a different image is shown on the matrix: highscore - :trophy:, settings - #, about - :question:
@@ -83,8 +86,8 @@ Depending on the difficulty, the game has 3 levels:
  - photoresistor -> adjust contrast, brightness, matrix brightness depending on the amount of light in the environment
 
 ## Setup
-<img src = "https://github.com/Madalina-Nicolescu/Simon-Says/blob/main/setup%20(3).jpeg" width = "500" height= "500">
-<img src = "https://github.com/Madalina-Nicolescu/Simon-Says/blob/main/setup%20(5).jpeg" width = "500" height= "500">
+<img src = "https://github.com/Madalina-Nicolescu/Simon-Says/blob/main/setup%20(3).jpeg" width = "700" height= "500">
+<img src = "https://github.com/Madalina-Nicolescu/Simon-Says/blob/main/setup%20(5).jpeg" width = "700" height= "500">
 
 
 
