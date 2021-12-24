@@ -26,18 +26,18 @@ The principal menu consists of the following options:
       - MATRIX BRIGHTNESS
       - CLEAR HIGHSCORE
       - SOUND
-       - ON/OFF
+        - ON/OFF
       - GAME SONG 
-       - JINGLE BELLS
-       - WE WISH YOU A MERRY CHRISTMAS
-       - SANTA CLAUS IS COMING TO TOWN
+        - JINGLE BELLS
+        - WE WISH YOU A MERRY CHRISTMAS
+        - SANTA CLAUS IS COMING TO TOWN
   - ABOUT
       - GAME NAME
-       - SIMON SAYS
+        - SIMON SAYS
       - AUTHOR
-       - MADALINA NICOLESCU 
+        - MADALINA NICOLESCU 
       - GITHUB
-       - MADALINA-NICOLESCU
+        - MADALINA-NICOLESCU
        
 The user can scroll through these options using the joystick and select one by pressing the button. 
 When accesing a menu, a different image is shown on the matrix: highscore - :trophy:, settings - #, about - :question:
@@ -75,6 +75,43 @@ Depending on the difficulty, the game has 3 levels:
  - Low difficulty: - +1 point/correct sequence, 12 seconds to reproduce the sequence, 600 ms delay between the display of every arrow
  - Medium difficulty: - +5 point/correct sequence, 10 seconds to reproduce the sequence, 500 ms delay between the display of every arrow
  - Low difficulty: - +10 point/correct sequence, 9 seconds to reproduce the sequence, 400 ms delay between the display of every arrow
+
+
+### Code architecture
+The project is divided into 11 headers, some of them corresponds to the hardware components, others keeping track of used variables.
+
+ - LCD.h - display the menus, different messages
+         - main functions: - updateMenu (calls the logic for every different submenu and then display the submenu)
+                           - showMenu (depending on the menu you are in and the menu cursor, it displays a custom design)
+                           - fillMenu (fills the "options" array for the current menu)
+ - buzzer.h - emitting sounds in different moments of the game and scrolling through menus
+            - main functions: - wrongSoundEffect (emits the sound effect for failure)
+                              - buzz (gets an index and a song number and emits the corresponding song's note)
+ - eepr.h - saving variables in eeprom
+          - main functions: - readIntFromEEPROM
+                            - writeIntToEEPROM
+                            - readStringFromEEPROM
+                            - writeStringToEEPROM
+                            - saveScore
+ - joystick.h - navigating through menus, used for input in the game
+              - main functions: - readSWState
+                                - yMoveJoystick
+                                - xMoveJoystick
+ - matrix.h - showing animations and displaying the game
+ - photoRes.h - adjusting contrast and brightness depending on the environment
+              - main functions: - photoResistorAdjust
+
+ - constants.h- all the constants used
+ - customChars.h - all the custom characters created
+ - globals.h - global variables
+ - notes.h - tones used by the buzzer
+
+ - game.h - the game logic
+          - main functions: - addMove (adds a move to the sequence)
+                            - decreaseLives
+                            - decreaseTime
+                            - startGame (the game flow)
+                            - newRound (resets the time and shows again the sequence)
 
 
 ### Hardware components
